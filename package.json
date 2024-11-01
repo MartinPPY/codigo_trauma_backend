@@ -4,7 +4,9 @@
   "description": "backend de arquitectura",
   "main": "src/app.js",
   "scripts": {
-    "dev":"tsnd --respawn --clear src/server.ts"
+    "dev":"tsnd --respawn --clear src/server.ts",
+    "start": "node src/server.js",
+    "build":"rimraf ./dist && tsc"
   },
   "author": "MartinPPY",
   "license": "ISC",
