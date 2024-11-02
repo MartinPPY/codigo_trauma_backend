@@ -61,6 +61,40 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
 
 export const login = async (req: Request, res: Response): Promise<void> => {
 
+    const { email, password } = req.body
+
+    try {
+
+        if (!email || !password) {
+            res.status(400).json({ message: "faltan credenciales" })
+            return
+        }
+
+        const user = await prisma.findUnique({ where: { email } })
+
+        if (!user) {
+            res.status(404).json({ message: "usuario no encontrado" })
+            return
+        }
+
+        const passwrodMatch = compararCifrado(password, user.password)
+
+        if (!passwrodMatch) {
+            res.status(401).json({ message: "las credenciales no coinciden" })
+            return
+        }
+
+        const token = generarToken(user)
+
+        res.status(200).json({ user })
+
+
+    } catch (error) {
+
+        console.log(error)
+
+    }
+
 
 
 }
