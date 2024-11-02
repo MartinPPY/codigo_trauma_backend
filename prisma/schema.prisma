@@ -15,6 +15,9 @@ datasource db {
 
 model user {
   id       Int    @id @default(autoincrement())
+  nombre   String
+  apellido String
+  cargo    String
   email    String @unique
   password String @unique
 }

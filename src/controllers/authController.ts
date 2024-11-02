@@ -5,7 +5,7 @@ import { generarToken, cifrarPassword, compararCifrado } from "../services/authS
 
 export const registrar = async (req: Request, res: Response): Promise<void> => {
 
-    const { email, password } = req.body
+    const { email, password, nombre, apellido, cargo } = req.body
 
     try {
 
@@ -28,8 +28,12 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
         const user = await prisma.create(
             {
                 data: {
+                    nombre: nombre,
+                    apellido: apellido,
+                    cargo: cargo,
                     email: email,
-                    password: contraCifrada
+                    password: contraCifrada,
+
                 }
             }
         )
@@ -43,7 +47,7 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
 
         if (error?.code === 'P2002' && error.meta?.target?.includes('email')) {
 
-            res.status(400).json({message:'el usuario ya existe!'})
+            res.status(400).json({ message: 'el usuario ya existe!' })
             return
 
         }
