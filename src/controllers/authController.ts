@@ -39,7 +39,14 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
         res.status(201).json({ token })
 
 
-    } catch (error) {
+    } catch (error: any) {
+
+        if (error?.code === 'P2002' && error.meta?.target?.includes('email')) {
+
+            res.status(400).json({message:'el usuario ya existe!'})
+            return
+
+        }
 
         console.log(error)
 
@@ -50,6 +57,6 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
 
 export const login = async (req: Request, res: Response): Promise<void> => {
 
-    
+
 
 }
