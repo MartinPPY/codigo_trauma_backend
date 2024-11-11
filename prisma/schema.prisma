@@ -13,5 +13,6 @@ model personal {
   apellido String
   fono     Int
   email    String @unique
+  password String @unique
   cargo    String
 }
