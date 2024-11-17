@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import personalRoutes from './routes/personalRoutes'
+import cargoRoutes from './routes/cargoRoutes'
 
 dotenv.config()
 
@@ -19,5 +20,6 @@ console.log('empezando servidor')
 
 //RUTAS O ENDPOINTS
 app.use('/personal', personalRoutes)
+app.use('/cargo',cargoRoutes)
 
 export default app

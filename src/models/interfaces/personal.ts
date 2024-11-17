@@ -5,5 +5,5 @@ export interface personal {
     fono: number,
     email: string,
     password: string
-    cargo: string
+    cargo: number
 }
