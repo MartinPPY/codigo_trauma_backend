@@ -21,3 +21,19 @@ model cargo {
   id          Int    @id @default(autoincrement())
   descripcion String
 }
+
+model emergencia {
+  id          Int    @id @default(autoincrement())
+  descripcion String
+  victimas    String
+  fecha       String
+}
+
+model atencion {
+  id          Int    @id @default(autoincrement())
+  descripcion String
+  victimas    Int
+  fecha       String
+  estado      String
+  medico      String
+}

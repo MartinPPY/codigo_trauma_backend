@@ -46,7 +46,7 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
 }
 
 //LOGIN
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
 
     const { email, password } = req.body
 
@@ -79,6 +79,27 @@ export const login = async (req: Request, res: Response) => {
         const token = generarToken(user)
 
         res.status(200).json({ token: token, user: user })
+
+    } catch (error: any) {
+
+        res.status(500).json({ message: 'error en el servidor!', error: error })
+
+    }
+
+}
+
+//TRAER MEDICOS
+export const getAllMedicos = async (req: Request, res: Response): Promise<void> => {
+
+    try {
+
+        const medicos = await prisma.findMany({
+            where: {
+                cargo: 1
+            }
+        })
+
+        res.status(200).json({ medicos })
 
     } catch (error: any) {
 

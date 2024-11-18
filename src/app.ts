@@ -3,23 +3,20 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import personalRoutes from './routes/personalRoutes'
 import cargoRoutes from './routes/cargoRoutes'
-
+import emergenciaRoutes from './routes/emergenciaRoutes'
 dotenv.config()
 
 const app = express()
 
 app.use(express.json())
 
-app.use(cors({
-    origin: ['http://localhost:4200'],
-    methods: 'GET,POST,PUT,PATCH.DELETE',
-    credentials: true
-}))
+app.use(cors())
 
 console.log('empezando servidor')
 
 //RUTAS O ENDPOINTS
 app.use('/personal', personalRoutes)
-app.use('/cargo',cargoRoutes)
+app.use('/cargo', cargoRoutes)
+app.use('/emergencia', emergenciaRoutes)
 
 export default app
