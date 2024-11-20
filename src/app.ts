@@ -4,6 +4,7 @@ import cors from 'cors'
 import personalRoutes from './routes/personalRoutes'
 import cargoRoutes from './routes/cargoRoutes'
 import emergenciaRoutes from './routes/emergenciaRoutes'
+import atencionRoutes from './routes/atencionRoutes'
 dotenv.config()
 
 const app = express()
@@ -18,5 +19,6 @@ console.log('empezando servidor')
 app.use('/personal', personalRoutes)
 app.use('/cargo', cargoRoutes)
 app.use('/emergencia', emergenciaRoutes)
+app.use('/atencion', atencionRoutes)
 
 export default app

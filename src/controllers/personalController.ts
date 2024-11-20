@@ -31,7 +31,8 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
                 email: email,
                 cargo: cargo,
                 fono: fono,
-                password: hashedPassword
+                password: hashedPassword,
+                disponibilidad: 'Disponible'
             }
         })
 

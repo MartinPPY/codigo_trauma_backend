@@ -15,6 +15,7 @@ model personal {
   email    String @unique
   password String @unique
   cargo    Int
+  disponibilidad String
 }
 
 model cargo {
@@ -30,10 +31,10 @@ model emergencia {
 }
 
 model atencion {
-  id          Int    @id @default(autoincrement())
-  descripcion String
-  victimas    Int
-  fecha       String
-  estado      String
-  medico      String
+  id             Int    @id @default(autoincrement())
+  descripcion    String
+  victimas       Int
+  fecha          String
+  estado         String
+  medico         String
 }
