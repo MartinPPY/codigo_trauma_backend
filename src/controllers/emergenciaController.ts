@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import emergencia from '../models/prisma/emergencia'
+import atencion from '../models/prisma/atencion'
 
 export const generarEmergencia = async (req: Request, res: Response): Promise<void> => {
 
@@ -22,6 +23,23 @@ export const generarEmergencia = async (req: Request, res: Response): Promise<vo
                 descripcion: descripcion,
                 fecha: fecha,
                 victimas: victimas
+            }
+        })
+
+        const fechaActual = new Date();
+        const anio = fechaActual.getFullYear();
+        const mes = String(fechaActual.getMonth() + 1).padStart(2, '0')
+        const dia = String(fechaActual.getDate()).padStart(2, '0')
+
+        const fechaFormateada = `${anio}-${mes}-${dia}`;
+
+        await atencion.create({
+            data: {
+                descripcion: descripcion,
+                estado: 'No atendida',
+                fecha: fechaFormateada,
+                medico: 'N/A',
+                victimas: parseInt(victimas)
             }
         })
 

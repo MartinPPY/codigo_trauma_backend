@@ -29,7 +29,7 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
                 nombre: nombre,
                 apellido: apellido,
                 email: email,
-                cargo: cargo,
+                cargo: parseInt(cargo),
                 fono: fono,
                 password: hashedPassword,
                 disponibilidad: 'Disponible'
@@ -39,8 +39,13 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
         res.status(201).json({ message: 'registro exitoso!' })
 
     } catch (error: any) {
+        if (error.meta.target == 'personal_email_key') {
+            res.status(400).json({ message: 'Credenciales ya existen!' })
+            return
+        }
 
         res.status(500).json({ message: 'Error en el servidor', error: error })
+        console.log(error)
 
     }
 
@@ -105,6 +110,50 @@ export const getAllMedicos = async (req: Request, res: Response): Promise<void> 
     } catch (error: any) {
 
         res.status(500).json({ message: 'error en el servidor!', error: error })
+
+    }
+
+}
+
+//TRAER PERSONAL POR EMAIL
+export const personalByEmail = async (req: Request, res: Response): Promise<void> => {
+    const userEmail = req.params.email
+    try {
+        const user = await prisma.findUnique({ where: { email: userEmail } })
+        if (!user) {
+            res.status(404).json({ message: 'Usuario no existe!' })
+            return
+        }
+        res.status(200).json(user)
+    } catch (error: any) {
+        res.status(500).json({ message: 'Error en el servidor!' })
+    }
+
+}
+
+//RESET_PASSWORD
+export const resetPassword = async (req: Request, res: Response) => {
+    const userEmail = req.params.email
+    const { password } = req.body
+    let dataToUpdate: any = { ...req.body }
+    try {
+
+        if (password) {
+            const hashedPassword = await hashPassword(password)
+            dataToUpdate.password = hashedPassword
+        }
+
+        const user = await prisma.update({
+            where: { email: userEmail },
+            data: dataToUpdate
+        })
+
+        res.status(200).json({ message: 'Registro actualizado!' })
+
+    } catch (error: any) {
+
+        res.status(500).json({ message: 'Error en el servidor!' })
+        console.log(error)
 
     }
 
