@@ -39,8 +39,14 @@ export const registrar = async (req: Request, res: Response): Promise<void> => {
         res.status(201).json({ message: 'registro exitoso!' })
 
     } catch (error: any) {
+
         if (error.meta.target == 'personal_email_key') {
-            res.status(400).json({ message: 'Credenciales ya existen!' })
+            res.status(400).json({ message: 'Correo electronico ya esta vigente!' })
+            return
+        }
+
+        if (error.meta.target == 'personal_fono_key') {
+            res.status(400).json({ message: 'Numero de telefono ya esta vigente!' })
             return
         }
 
@@ -71,7 +77,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const user = await prisma.findUnique({ where: { email } })
 
         if (!user) {
-            res.status(404).json({ message: 'Usuario no encontrado!' })
+            res.status(404).json({ message: 'Usuario no existe!' })
             return
         }
 
@@ -84,11 +90,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 
         const token = generarToken(user)
 
-        res.status(200).json({ token: token, user: user })
+        res.status(200).json({ token: token, email: user.email, cargo: user.cargo })
 
     } catch (error: any) {
 
         res.status(500).json({ message: 'error en el servidor!', error: error })
+        console.log(error)
 
     }
 
@@ -101,7 +108,7 @@ export const getAllMedicos = async (req: Request, res: Response): Promise<void> 
 
         const medicos = await prisma.findMany({
             where: {
-                cargo: 1
+                cargo: 3
             }
         })
 
@@ -110,6 +117,7 @@ export const getAllMedicos = async (req: Request, res: Response): Promise<void> 
     } catch (error: any) {
 
         res.status(500).json({ message: 'error en el servidor!', error: error })
+        console.log(error)
 
     }
 
@@ -143,7 +151,7 @@ export const resetPassword = async (req: Request, res: Response) => {
             dataToUpdate.password = hashedPassword
         }
 
-        const user = await prisma.update({
+        await prisma.update({
             where: { email: userEmail },
             data: dataToUpdate
         })

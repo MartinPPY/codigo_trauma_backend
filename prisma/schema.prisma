@@ -11,7 +11,7 @@ model personal {
   id       Int    @id @default(autoincrement())
   nombre   String
   apellido String
-  fono     Int
+  fono     Int @unique
   email    String @unique
   password String @unique
   cargo    Int
